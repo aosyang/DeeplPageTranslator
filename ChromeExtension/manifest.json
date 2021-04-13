@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "DeepL Page Translator",
+  "version": "0.1.0",
+  "description": "Translate webpages with DeepL",
+
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "DeepL Page Translator"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "web_accessible_resources": [
+    "popup.js",
+    "inject.js"
+  ],
+
+  "permissions": [
+    "nativeMessaging",
+    "storage",
+    "tabs",
+    "activeTab",
+    "management",
+    "https://*/*",
+    "http://*/*"
+  ]
+}

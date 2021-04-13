@@ -1,0 +1,7 @@
+{
+  "name": "com.translator.service",
+  "description": "Translator service",
+  "path": ".\\TranslatorHost\\bin\\Debug\\TranslatorHost.exe",
+  "type": "stdio",
+  "allowed_origins": [ "chrome-extension://gjijdgnlfjljeoplnchalchjhjkgkilc/" ]
+}

@@ -1,0 +1,1 @@
+DeepL Page Translator is a tool that translates webpage content in batches.

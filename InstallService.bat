@@ -1,0 +1,1 @@
+REG ADD "HKCU\Software\Google\Chrome\NativeMessagingHosts\com.translator.service" /ve /t REG_SZ /d "%cd%\translator.json" /f
