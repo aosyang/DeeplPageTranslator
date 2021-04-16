@@ -17,6 +17,8 @@ namespace Translator
         private readonly string InputSelector = "textarea[dl-test*='source']";
         private readonly string OutputSelector = "button[class='lmt__translations_as_text__text_btn']";
 
+        private bool bUseClipboard = true;
+
         public DeepL(int InVerbose = 0, bool bHeadless = false)
         {
             Verbose = InVerbose;
@@ -107,9 +109,33 @@ namespace Translator
                 {
                     Log("Pasting text to DeepL");
 
-                    // Copy text and paste it to Deepl. This is much faster than sending text by typing
-                    Clipboard.SetData(DataFormats.UnicodeText, Text);
-                    GetTextInput().SendKeys(Keys.Shift + Keys.Insert);
+                    if (bUseClipboard)
+                    {
+                        bool bClipboardError = false;
+
+                        // Copy text and paste it to Deepl. This is much faster than sending text by typing
+                        try
+                        {
+                            Clipboard.SetData(DataFormats.UnicodeText, Text);
+                        }
+                        catch (Exception)
+                        {
+                            bClipboardError = true;
+
+                            // Failed to use a clipboard, fallback to simulating key pressing
+                            bUseClipboard = false;
+                        }
+
+                        if (!bClipboardError)
+                        {
+                            GetTextInput().SendKeys(Keys.Shift + Keys.Insert);
+                        }
+                    }
+
+                    if (!bUseClipboard)
+                    {
+                        GetTextInput().SendKeys(Text);
+                    }
 
                     bSuccess = true;
                 }
@@ -154,13 +180,21 @@ namespace Translator
                     continue;
                 }
 
-                // When typing in the input, "[...]" indicates the translation is still running.
-                // This check is only needed if the translator is simulating typing in the input text,
-                // not when using clipboards.
-                //if (Output.Contains("[...]"))
-                //{
-                //    continue;
-                //}
+                if (!bUseClipboard)
+                {
+                    if (Output.Length <= 1 && Output != Text)
+                    {
+                        continue;
+                    }
+
+                    // When typing in the input, "[...]" indicates the translation is still running.
+                    // This check is only needed if the translator is simulating typing in the input text,
+                    // not when using clipboards.
+                    if (Output.Contains("[...]"))
+                    {
+                        continue;
+                    }
+                }
 
                 if (OutputBefore == Output)
                 {
