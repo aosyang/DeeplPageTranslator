@@ -34,16 +34,31 @@ namespace Translator
                 options.AddArgument("--disable-gpu");
             }
 
-            Driver = new ChromeDriver(chromeDriverService, options);
-            Log("Opening DeepL in browser");
+            try
+            {
+                Log("Opening DeepL in browser");
+                Driver = new ChromeDriver(chromeDriverService, options);
 
-            Driver.Navigate().GoToUrl("https://www.deepl.com/zh/translator");
-            Log("DeepL is ready");
+                Driver.Navigate().GoToUrl("https://www.deepl.com/zh/translator");
+                Log("DeepL is ready");
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Source == "WebDriver")
+                {
+                    Log(e.Message);
+                }
+
+                throw (e);
+            }
         }
 
         ~DeepL()
         {
-            Driver.Close();
+            if (Driver != null)
+            {
+                Driver.Quit();
+            }
             Log("Finalizing DeepL Translator");
         }
 

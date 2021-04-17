@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace TranslatorHost
 {
@@ -28,6 +29,10 @@ namespace TranslatorHost
             catch (ThreadAbortException)
             {
                 // Service stopped
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "An exception occurred!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

@@ -19,6 +19,9 @@ namespace TranslatorHost
 
             TranslatorThread = new Thread(() => ListenForMessage());
 
+            // Prevent stdio stream from blocking the thread when exits
+            TranslatorThread.IsBackground = true;
+
             // Need a STA thread for clipboard to work properly
             TranslatorThread.SetApartmentState(ApartmentState.STA);
             TranslatorThread.Start();
@@ -125,7 +128,10 @@ namespace TranslatorHost
         {
             var stdin = Console.OpenStandardInput();
             var lengthBytes = new byte[4];
+
+            // Read buffer length
             stdin.Read(lengthBytes, 0, 4);
+
             int length = BitConverter.ToInt32(lengthBytes, 0);
             var buffer = new char[length];
             using (var reader = new StreamReader(stdin))
