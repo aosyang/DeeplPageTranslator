@@ -17,6 +17,8 @@ function shrinkElement(element) {
         return element;
     }
 
+    // One of the children elements has the same content as this element.
+    // Discard the current element and use the child one.
     for (var i = 0; i < element.childElementCount; i++) {
         if (element.textContent == element.children[i].textContent) {
             return shrinkElement(element.children[i]);
@@ -72,6 +74,5 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+// Execute page translation on script injected
 translatePageElements();
-
-//alert('Hello!');
