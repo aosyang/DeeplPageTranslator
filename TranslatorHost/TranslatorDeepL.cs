@@ -201,7 +201,12 @@ namespace Translator
 
                 if (!bUseClipboard)
                 {
-                    if (Output.Length <= 1 && Output != Text)
+                    if (Output.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    if (Output.Length == 1 && Output[0] == Text[0] && Output != Text)
                     {
                         continue;
                     }
