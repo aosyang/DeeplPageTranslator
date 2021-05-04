@@ -149,6 +149,10 @@ namespace Translator
 
                     if (!bUseClipboard)
                     {
+                        // Remove UTF-16 surrogate code units
+                        // https://stackoverflow.com/questions/28023682/how-do-i-remove-emoji-characters-from-a-string
+                        Text = Regex.Replace(Text, @"\p{Cs}", "");
+
                         GetTextInput().SendKeys(Text);
                     }
 
